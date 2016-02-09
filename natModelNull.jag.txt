@@ -1,0 +1,15 @@
+model {
+      ## Model DGP
+      for (i in 1:n.obs){ 
+      	  y[i,] ~ dmulti(prob[i,],n[i])  
+      	  for (a in 1:3) {
+	      eta[i,a] <- 1 * beta[a]
+	      expeta[i,a] <- exp(eta[i,a])
+	      prob[i,a] <- expeta[i,a]/sum(expeta[i,1:3])
+	  }
+      }
+
+      ## Prior distributions
+      beta[1] <- 0   # identifying assumption
+      beta[2:3] ~ dmnorm(mu.beta[],sigma.beta[,])		
+}
